@@ -1,10 +1,9 @@
-// main.cc
-// Andrew Gilpin
+// Taken from Andrew Gilpin - now an engineer at Google
+// https://www.cs.cmu.edu/~gilpin/tutorial/#3.1
 // agg1@cec.wustl.edu
 
-// This file contains the example program used in the gdb debugging
-// tutorial. The tutorial can be found on the web at
-// http://students.cec.wustl.edu/~agg1/tutorial/
+// This file contains a linked list with a segmentation fault
+// for gdb tutorial.
 
 #include <iostream>
 
