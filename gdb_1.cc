@@ -62,14 +62,14 @@ public:
             delete marker; // marker is the only element in the list
             marker = 0;
           } else {
-            head_ = new Node<T>(marker->value(), marker->next());
+            head_ = marker->next();
             delete marker;
             marker = 0;
           }
           return 0;
         } else {
           temp->next (marker->next());
-          delete temp;
+          delete marker;
           temp = 0;
           return 0;
         }
