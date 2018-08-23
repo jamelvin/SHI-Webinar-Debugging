@@ -17,5 +17,9 @@ Below are some brief instructions for installing GDB (if necessary) for various 
 **Windows:**   
 - The simplest way to install GDB is within MinGW (Minimalist GNU for Windows). Clicking the following link will start the download: https://sourceforge.net/projects/mingw/files/latest/download
 - Complete the MinGW installation in the usual Windows fashion. The default settings should be sufficient.
+- A Graphical User Interface (GUI) should automatically pop up. If not, navigate to `C:\MinGW\libexec\mingw-get\guimain.exe` and execute the program. This should bring up the GUI window.
+- Use the GUI to install the "mingw32-gbd bin" package. Click on the box to mark it for installation.
+- To complete teh installation, click on `Installation` &rarr; `Apply Changes`, then click on `Apply` in the resulting window.
 - Open the Windows command prompt by searching for `cmd`
 - To open the GDB program with another program which you would like to debug, type into the command prompt: `c:\mingw\bin\gdb.exe program_to_debug.exe`
+- You may get an error if you are missing any libraries or dependencies. For example, a possible error is the lack of a gcc compiler. To fix this, simply search for a package that seems reasonable, such as "mingw32-gcc" and install it.
