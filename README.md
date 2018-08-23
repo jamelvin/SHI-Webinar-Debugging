@@ -15,4 +15,7 @@ Below are some brief instructions for installing GDB (if necessary) for various 
 - To check the installation, type `gdb --v` and you'll see the software version if the installation was successful.
   
 **Windows:**   
-  This will again be dependent on what coding environment you use and possibly can be difficult.  If you use MinGW, the following may help: https://rpg.hamsterrepublic.com/ohrrpgce/GDB_on_Windows.
+- The simplest way to install GDB is within MinGW (Minimalist GNU for Windows). Clicking the following link will start the download: https://sourceforge.net/projects/mingw/files/latest/download
+- Complete the MinGW installation in the usual Windows fashion. The default settings should be sufficient.
+- Open the Windows command prompt by searching for `cmd`
+- To open the GDB program with another program which you would like to debug, type into the command prompt: `c:\mingw\bin\gdb.exe program_to_debug.exe`
