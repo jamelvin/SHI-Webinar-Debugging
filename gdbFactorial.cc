@@ -23,7 +23,7 @@ int main()
     long val=factorial(n);
 
     // Output
-    cout<<val<<endl;
+    cout<<endl<<n<<"! is "<<val<<endl;
     
     // Keep console open for output
     cin.get();
