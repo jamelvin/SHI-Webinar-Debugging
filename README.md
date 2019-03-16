@@ -6,7 +6,7 @@ I will be using GDB (GNU Project Debugger) for all examples.  To prevent the nee
 Below are some brief instructions for installing GDB (if necessary) for various OS.
 
 **Linux:**   
-- GDB should come installed as a standard package on your system.  Check to see if it is installed by typing `gdb --v`.
+- GDB should come pre-installed as a standard package on your system.  Check to see if it is installed by typing `gdb --v`.
 - If you don't already have it, you should be able to install it using your package manager or from https://www.gnu.org/software/gdb/download/.
   
 **Mac:**   
