@@ -9,7 +9,7 @@ double evalFxn(double pos, double leftBound, double rightBound)
   else if ((pos >= 0.1) && (pos <= 0.6))
     eval = 3.0*pos*pos - 2.0*pos + 0.17;
   else if ((pos > 0.6) && (pos <= rightBound))
-    eval = 1.0/8.0 * (pos - 0.6) + 0.05;
+    eval = -1.0/8.0 * (pos - 0.6) + 0.05;
   else
     std::cout << "Error: You are trying to integrate between " << leftBound << " and " << rightBound << " but are attempting to eval at " << pos << std::endl;
   return eval;
@@ -33,17 +33,21 @@ int main(int argc, char *argv[])
   double dx = (rightBdry - leftBdry)/globalNumCells;
   int localNumCells = (int) ((float)globalNumCells/numProcs + 0.5);
 
+  //std::cout << myRank << " " << localNumCells << " " << leftBdry + myRank*dProc << std::endl;
+
   for (int i = 0; i < localNumCells; i++)
   {
-    double midpt = leftBdry + myRank*dProc + i*dx + 0.5*dx;
+    //double midpt = leftBdry + myRank*dProc + i*dx + 0.5*dx;
+    double midpt = leftBdry + myRank*localNumCells*dx + i*dx + 0.5*dx;
     double fxnEval = evalFxn(midpt, leftBdry, rightBdry);
-    localSum += fxnEval;
+    localSum += fxnEval*dx;
   }
 
-  MPI_Reduce(&localsum,&globalsum,1,MPI_DOUBLE,MPI_SUM,0,MPI_COMM_WORLD);
+  MPI_Reduce(&localSum,&globalSum,1,MPI_DOUBLE,MPI_SUM,0,MPI_COMM_WORLD);
 
   if (myRank == 0)
     std::cout << "The integral is " << globalSum << std::endl;
 
+  MPI_Finalize();
   return 0;
 }
