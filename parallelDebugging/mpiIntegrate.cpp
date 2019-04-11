@@ -37,17 +37,12 @@ int main(int argc, char *argv[])
   //if (myRank == 7)
   //  while (infLoop);
 
-  // Domain size covered by a processor
-  double dProc = (rightBdry - leftBdry)/numProcs;
-  
   // Domain size covered by a cell
   double dx = (rightBdry - leftBdry)/globalNumCells;
 
   // On each processor, take 1/numProcs of the domain
   // However, since you can't do a partial cell, round this
   int localNumCells = (int) ((float)globalNumCells/numProcs + 0.5);
-
-  //std::cout << myRank << " " << localNumCells << " " << leftBdry + myRank*dProc << std::endl;
 
   for (int i = 0; i < localNumCells; i++)
   {

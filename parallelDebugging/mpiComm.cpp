@@ -1,13 +1,22 @@
-#include <stdio.h>
-#include <stdlib.h>
+// This file should create an array of size (gridSize) and populate it with the 
+// processor ID.  The array will also contain buffer cells of size (ghostSize), 
+// at the beginning and end of the array.  Using MPI, each processor should 
+// communicate with it's neighbor to populate the ghost cell array.
+//
+// Finally, each processor should dump its array to a file (myid.txt)
+
+#include <iostream>
 #include <math.h>
 #include <mpi.h>
+#include <sstream>
+#include <fstream>
 
 int main(int argc, char *argv[])
 {
   int ierr, myid, numprocs;
   int ghostSize = 1;
   int gridSize = 8;
+  //int nbrid[2];
 
   MPI_Status stat;
   ierr = MPI_Init(&argc, &argv);
@@ -33,39 +42,46 @@ int main(int argc, char *argv[])
   // first store the ghost cells in the lower direction
   for (int i=ghostSize; i < 2*ghostSize; ++i) {
     int ind = i - ghostSize;
-    xbufSend[ind] = phi[i];
+    bufSend[ind] = phi[i];
   }
 
   // send to lower and recv from upper
-  MPI_Send(bufSend, nGuard, MPI_DOUBLE, myid-1, 111, MPI_COMM_WORLD); 
-  MPI_Recv(bufRecv, nGuard, MPI_DOUBLE, myid+1, 111, MPI_COMM_WORLD, &stat); 
+  MPI_Send(bufSend, ghostSize, MPI_DOUBLE, myid-1, 111, MPI_COMM_WORLD); 
+  MPI_Recv(bufRecv, ghostSize, MPI_DOUBLE, myid+1, 111, MPI_COMM_WORLD, &stat); 
 
   // what you received from the lower nbr, put it in phi
-  for (int i=0; i < nGuard; ++i) {
+  for (int i=0; i < ghostSize; ++i) {
     int ind = ghostSize + gridSize + i;
-    phi[ind] = xbufRecv[i];
+    phi[ind] = bufRecv[i];
   }
 
   //prepare the ghost cells to be sent in upper direction
   for (int i=gridSize; i < ghostSize+gridSize; ++i) {
     int ind = i - gridSize;
-    xbufSend[ind] = phi[i];
+    bufSend[ind] = phi[i];
   }
 
   // send to upper and recv from the lower neighbor
-  MPI_Send(xbufSend, ySize*nGuard, MPI_DOUBLE, myid+1, 222, MPI_COMM_WORLD);
-  MPI_Recv(xbufRecv, ySize*nGuard, MPI_DOUBLE, myid-1, 222, MPI_COMM_WORLD, &stat);
+  MPI_Send(bufSend, ghostSize, MPI_DOUBLE, myid+1, 222, MPI_COMM_WORLD);
+  MPI_Recv(bufRecv, ghostSize, MPI_DOUBLE, myid-1, 222, MPI_COMM_WORLD, &stat);
 
-  // now put the received ghost cells from the right into the upper guard cells
+  // now put the received ghost cells from the right into the lower guard cells
   for (int i=gridSize + ghostSize; i < gridSize + 2*ghostSize; ++i) {
-      ind = i - ghostSize+gridSize;
-      phi[i] = xbufRecv[ind];
+      int ind = i - ghostSize+gridSize;
+      phi[ind] = bufRecv[i];
   }
 
-  std::cont << "On processor " << myid << std::endl;
-  for (i=0; i < 2*ghostSize + gridSize; ++i) 
-    std::cout << phi[i] << " ";
-  std::cout << std::endl;
+  std::ofstream myfile;
+  std::ostringstream fnameStream("xxxxx");
+  fnameStream << myid << ".txt";
+  std::string fname = fnameStream.str();
+  myfile.open(fname.c_str());
+  myfile << "On processor " << myid << std::endl;
+  for (int i=0; i < 2*ghostSize + gridSize; ++i) 
+    myfile << phi[i] << " ";
+  myfile << std::endl;
+
+  myfile.close();
 
   delete[] phi;
   delete[] bufSend;

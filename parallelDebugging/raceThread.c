@@ -1,3 +1,6 @@
+// Example borrowed from M. Golebiewski,
+// https://confluence.csiro.au/display/SC/Frequent+parallel+programming+errors
+
 #include "omp.h"
 #include "stdio.h"
 
