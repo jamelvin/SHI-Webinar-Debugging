@@ -1,5 +1,6 @@
 // Example borrowed from M. Golebiewski,
 // https://confluence.csiro.au/display/SC/Frequent+parallel+programming+errors
+// Simple counter loop, should print whatever n is set to
 
 #include "omp.h"
 #include "stdio.h"
